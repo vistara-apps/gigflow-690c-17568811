@@ -1,4 +1,4 @@
-    'use client';
+'use client';
 
     import { ReactNode } from 'react';
     import Link from 'next/link';
@@ -15,11 +15,12 @@
             <nav>
               <Link href="/" className="mr-4">Marketplace</Link>
               <Link href="/profile" className="mr-4">Profile</Link>
-              <Link href="/earnings">Earnings</Link>
+              <Link href="/earnings" className="mr-4">Earnings</Link>
+              <Link href="/insights" className="mr-4">Insights</Link>
+              <Link href="/offerings">Offerings</Link>
             </nav>
           </header>
           <main className="flex-grow">{children}</main>
         </div>
       );
     }
-  
