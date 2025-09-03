@@ -1,0 +1,22 @@
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    :root {
+      --bg: hsl(210 40% 96.1%);
+      --accent: hsl(208 92.3% 53%);
+      --primary: hsl(240 9.8% 46.1%);
+      --surface: hsl(0 0% 100%);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      --shadow-card: 0 4px 12px hsla(0, 0%, 0%, 0.08);
+      --spacing-lg: 20px;
+      --spacing-md: 12px;
+      --spacing-sm: 8px;
+    }
+
+    body {
+      @apply bg-bg text-primary;
+    }
+  
