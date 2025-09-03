@@ -1,10 +1,10 @@
-    'use client';
+'use client';
 
     import { useAccount, useSendTransaction } from 'wagmi';
     import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-    import { Gig, User } from './types.js';
-    import { GigCard } from './components/GigCard.js';
-    import { AppShell } from './components/AppShell.js';
+    import { Gig, User } from './types';
+    import { GigCard } from './components/GigCard';
+    import { AppShell } from './components/AppShell';
     import { ConnectWallet } from '@coinbase/onchainkit/wallet';
     import { parseEther } from 'viem';
 
@@ -98,4 +98,3 @@
         </AppShell>
       );
     }
-  

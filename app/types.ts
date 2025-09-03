@@ -1,4 +1,4 @@
-    export interface User {
+export interface User {
       userId: string; // wallet address
       username?: string;
       walletAddress: string;
@@ -10,12 +10,14 @@
       gigId: string;
       title: string;
       description: string;
-      skillsRequired: string[];
+      skills?: string[];
+      skillsRequired?: string[];
       payoutAmount: number; // in USD or ETH, but for simplicity number
-      status: 'open' | 'accepted' | 'completed';
-      postedByUserId: string;
+      status: 'open' | 'in-progress' | 'accepted' | 'completed';
+      createdByUserId?: string;
+      postedByUserId?: string;
       completedByUserId?: string;
       createdAt: string;
+      updatedAt?: string;
       completedAt?: string;
     }
-  

@@ -1,57 +1,97 @@
-    'use client';
+'use client';
 
-    import { Gig } from '../types.js';
-    import { PrimaryButton } from './PrimaryButton.js';
-    import { SkillTag } from './SkillTag.js';
-    import { useState } from 'react';
+import { useState } from 'react';
+import { Gig } from '../types';
+import { SkillTag } from './SkillTag';
+import { PrimaryButton } from './PrimaryButton';
+import { formatAddress, formatDate } from '../lib/utils';
 
-    interface GigCardProps {
-      gig: Gig;
-      onAccept: (gigId: string) => void;
-      onComplete: (gigId: string) => void;
-      isAcceptedByUser: boolean;
-    }
+interface GigCardProps {
+  gig: Gig;
+  onAccept: (gigId: string) => void;
+  onComplete: (gigId: string) => void;
+  isAcceptedByUser: boolean;
+}
 
-    export function GigCard({ gig, onAccept, onComplete, isAcceptedByUser }: GigCardProps) {
-      const [loading, setLoading] = useState(false);
+export function GigCard({ gig, onAccept, onComplete, isAcceptedByUser }: GigCardProps) {
+  const [expanded, setExpanded] = useState(false);
 
-      const handleAccept = async () => {
-        setLoading(true);
-        await onAccept(gig.gigId);
-        setLoading(false);
-      };
+  const isOpen = gig.status === 'open';
+  const isAccepted = gig.status === 'accepted';
+  const isCompleted = gig.status === 'completed';
 
-      const handleComplete = async () => {
-        setLoading(true);
-        await onComplete(gig.gigId);
-        setLoading(false);
-      };
+  const handleAccept = () => {
+    onAccept(gig.gigId);
+  };
 
-      let variant = 'default';
-      if (gig.status === 'completed') variant = 'completed';
-      else if (gig.status === 'accepted') variant = 'active';
+  const handleComplete = () => {
+    onComplete(gig.gigId);
+  };
 
-      return (
-        <div className={`p-4 rounded-lg shadow-card bg-surface mb-4 ${variant === 'completed' ? 'opacity-50' : ''}`}>
-          <h3 className="text-display">{gig.title}</h3>
-          <p className="text-body">{gig.description}</p>
-          <div className="flex flex-wrap mt-2">
-            {gig.skillsRequired.map((skill) => (
-              <SkillTag key={skill} skill={skill} />
-            ))}
+  return (
+    <div className="border rounded-lg p-4 mb-4 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-lg font-medium">{gig.title}</h3>
+          <p className={`text-sm ${expanded ? '' : 'line-clamp-2'}`}>{gig.description}</p>
+          {gig.description.length > 120 && (
+            <button 
+              onClick={() => setExpanded(!expanded)} 
+              className="text-blue-500 text-sm mt-1"
+            >
+              {expanded ? 'Show less' : 'Show more'}
+            </button>
+          )}
+        </div>
+        <div className="text-right">
+          <div className="font-semibold">${gig.payoutAmount.toFixed(2)}</div>
+          <div className={`text-sm px-2 py-1 rounded-full inline-block ${
+            isOpen ? 'bg-green-100 text-green-800' : 
+            isAccepted ? 'bg-yellow-100 text-yellow-800' : 
+            'bg-blue-100 text-blue-800'
+          }`}>
+            {gig.status}
           </div>
-          <p className="mt-2">Payout: ${gig.payoutAmount}</p>
-          {gig.status === 'open' && (
-            <PrimaryButton onClick={handleAccept} disabled={loading}>
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {gig.skills?.map(skill => (
+          <SkillTag key={skill} skill={skill} />
+        ))}
+        {gig.skillsRequired?.map(skill => (
+          <SkillTag key={skill} skill={skill} />
+        ))}
+      </div>
+
+      <div className="mt-4 flex justify-between items-center">
+        <div className="text-sm text-gray-500">
+          {gig.createdByUserId && (
+            <div>Posted by: {formatAddress(gig.createdByUserId)}</div>
+          )}
+          {gig.postedByUserId && !gig.createdByUserId && (
+            <div>Posted by: {formatAddress(gig.postedByUserId)}</div>
+          )}
+          <div>Created: {gig.createdAt ? formatDate(gig.createdAt) : 'Unknown'}</div>
+        </div>
+
+        <div>
+          {isOpen && (
+            <PrimaryButton onClick={handleAccept}>
               Accept Gig
             </PrimaryButton>
           )}
-          {isAcceptedByUser && gig.status === 'accepted' && (
-            <PrimaryButton onClick={handleComplete} disabled={loading}>
+          {isAccepted && isAcceptedByUser && (
+            <PrimaryButton onClick={handleComplete}>
               Mark Complete
             </PrimaryButton>
           )}
+          {isCompleted && (
+            <span className="text-green-600 font-medium">Completed</span>
+          )}
         </div>
-      );
-    }
-  
+      </div>
+    </div>
+  );
+}
+

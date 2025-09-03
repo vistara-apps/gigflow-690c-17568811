@@ -1,9 +1,11 @@
-    'use client';
+'use client';
 
     import { useAccount } from 'wagmi';
     import { useQuery } from '@tanstack/react-query';
-    import { Gig } from '../types.js';
-    import { AppShell } from '../components/AppShell.js';
+    import { Gig } from '../types';
+    import { AppShell } from '../components/AppShell';
+    import { EarningsChart } from '../components/EarningsChart';
+    import { PerformanceMetrics } from '../components/PerformanceMetrics';
 
     export default function Earnings() {
       const { address } = useAccount();
@@ -31,11 +33,9 @@
               </li>
             ))}
           </ul>
-          {/* Lite Performance Insights */}
-          <h3 className="mt-4">Performance Insights</h3>
-          <p>Completed Gigs: {completedGigs.length}</p>
-          <p>Average Earnings: ${completedGigs.length > 0 ? (totalEarnings / completedGigs.length).toFixed(2) : 0}</p>
+          {/* Enhanced Performance Insights */}
+          <EarningsChart completedGigs={completedGigs} />
+          <PerformanceMetrics completedGigs={completedGigs} />
         </AppShell>
       );
     }
-  
