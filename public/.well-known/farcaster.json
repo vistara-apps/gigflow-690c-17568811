@@ -10,14 +10,14 @@
     "subtitle": "Built with Zara",
     "description": "GigFlow is a Base Mini App built with Zara.",
     "iconUrl": "https://0co.to/images/zara-2.png",
-    "homeUrl": "https://690c09a8-5d37-4ab8-bbac-822873416bd0.vistara.dev",
-    "splashImageUrl": "https://dummyimage.com/200x200/0a0b0d/ffffff.png&text=Splash",
+    "homeUrl": "https://690c09a85d374ab8bbac822873416bd0-nzba-10htvwydt-vistara.vercel.app",
+    "splashImageUrl": "https://690c09a85d374ab8bbac822873416bd0-nzba-10htvwydt-vistara.vercel.app/splash.png",
     "splashBackgroundColor": "#000000",
-    "heroImageUrl": "https://dummyimage.com/1200x628/0a0b0d/ffffff.png&text=Hero",
+    "heroImageUrl": "https://690c09a85d374ab8bbac822873416bd0-nzba-10htvwydt-vistara.vercel.app/image.png",
     "tagline": "GigFlow",
     "screenshotUrls": [
-      "https://dummyimage.com/1200x628/0a0b0d/ffffff.png&text=Shot1",
-      "https://dummyimage.com/1200x628/0a0b0d/ffffff.png&text=Shot2"
+      "https://690c09a85d374ab8bbac822873416bd0-nzba-10htvwydt-vistara.vercel.app/screenshot.png",
+      "https://690c09a85d374ab8bbac822873416bd0-nzba-10htvwydt-vistara.vercel.app/screenshot.png"
     ],
     "primaryCategory": "social",
     "tags": [
@@ -25,6 +25,6 @@
       "miniapp",
       "onchainkit"
     ],
-    "webhookUrl": "https://690c09a8-5d37-4ab8-bbac-822873416bd0.vistara.dev/api/webhook"
+    "webhookUrl": "https://690c09a85d374ab8bbac822873416bd0-nzba-10htvwydt-vistara.vercel.app/api/webhook"
   }
 }
