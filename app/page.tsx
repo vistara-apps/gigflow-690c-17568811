@@ -1,4 +1,4 @@
-    'use client';
+'use client';
 
     import { useAccount, useSendTransaction } from 'wagmi';
     import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -55,20 +55,56 @@
 
       const completeMutation = useMutation({
         mutationFn: async (gigId: string) => {
+          // First update the gig status
           const res = await fetch('/api/gigs', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ gigId, status: 'completed', completedByUserId: address }),
           });
           if (!res.ok) throw new Error('Failed to complete gig');
-          return res.json();
+          const updatedGig = await res.json();
+          
+          // Then create a transaction record
+          const txRes = await fetch('/api/transactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              gigId: updatedGig.gigId,
+              fromUserId: updatedGig.postedByUserId,
+              toUserId: address,
+              amount: updatedGig.payoutAmount,
+            }),
+          });
+          
+          if (!txRes.ok) throw new Error('Failed to create transaction record');
+          const transaction = await txRes.json();
+          
+          return { gig: updatedGig, transaction };
         },
-        onSuccess: (updatedGig: Gig) => {
+        onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ['gigs'] });
-          // Simulate payout (in real, deduct commission)
+          
+          // Process the blockchain transaction
+          const { gig, transaction } = data;
+          
+          // Calculate amount after commission
+          const amountAfterCommission = gig.payoutAmount * (1 - 0.025); // 2.5% commission
+          
+          // Send the transaction
           sendTransaction({
             to: address as `0x${string}`,
-            value: parseEther((updatedGig.payoutAmount * 0.975).toString()), // Deduct 2.5% commission
+            value: parseEther(amountAfterCommission.toString()),
+            onSuccess(data) {
+              // Update the transaction record with the tx hash
+              fetch('/api/transactions', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  transactionId: transaction.transactionId,
+                  txHash: data.hash,
+                }),
+              });
+            },
           });
         },
       });
@@ -98,4 +134,3 @@
         </AppShell>
       );
     }
-  
