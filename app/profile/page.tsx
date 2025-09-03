@@ -1,11 +1,11 @@
-    'use client';
+'use client';
 
     import { useAccount } from 'wagmi';
     import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-    import { User } from '../types.js';
-    import { AppShell } from '../components/AppShell.js';
-    import { PrimaryButton } from '../components/PrimaryButton.js';
-    import { SkillTag } from '../components/SkillTag.js';
+    import { User } from '../types';
+    import { AppShell } from '../components/AppShell';
+    import { PrimaryButton } from '../components/PrimaryButton';
+    import { SkillTag } from '../components/SkillTag';
     import { useState } from 'react';
 
     export default function Profile() {
@@ -63,4 +63,3 @@
         </AppShell>
       );
     }
-  
